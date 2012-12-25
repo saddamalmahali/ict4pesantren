@@ -6,6 +6,7 @@ package aplikasipesantren.entity;
 
 import java.awt.Image;
 import java.io.Serializable;
+import java.sql.Blob;
 import java.util.Date;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -30,7 +31,7 @@ public class Santri implements Serializable{
     private int idKamar;
     private String asalSekolah;
     private String luluasanTerakhir;
-    private ImageIcon foto;
+    private byte[] foto;
 
     public int getId() {
         return id;
@@ -152,13 +153,15 @@ public class Santri implements Serializable{
         this.luluasanTerakhir = luluasanTerakhir;
     }
 
-    public ImageIcon getFoto() {
+    public byte[] getFoto() {
         return foto;
     }
 
-    public void setFoto(ImageIcon foto) {
+    public void setFoto(byte[] foto) {
         this.foto = foto;
     }
+
+    
     
     
     
