@@ -4,16 +4,27 @@
  */
 package aplikasipesantrenclient.view;
 
+import aplikasipesantren.entity.Pelajaran;
+import aplikasipesantrenclient.model.PelajaranModel;
 import aplikasipesantrenclient.model.TabelPelajaranModel;
+import aplikasipesantrenclient.model.listener.PelajaranListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.rmi.registry.Registry;
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
  * @author Saddam
  */
-public class InternalPelajaran extends javax.swing.JInternalFrame {
+public class InternalPelajaran extends javax.swing.JInternalFrame implements PelajaranListener, ListSelectionListener{
     private TabelPelajaranModel model;
     private static Registry register;
+    private PelajaranModel pModel;
+    
 
     public InternalPelajaran(Registry r) {
         register = r;
@@ -25,8 +36,12 @@ public class InternalPelajaran extends javax.swing.JInternalFrame {
      */
     public InternalPelajaran() {
         model = new TabelPelajaranModel();
+        pModel = new PelajaranModel("127.0.0.1", 4444);
         initComponents();
+        pModel.setListener(this);
         tabelPelajaran.setModel(model);
+        tabelPelajaran.getSelectionModel().addListSelectionListener(this);
+        
     }
 
     public static Registry getRegister() {
@@ -35,6 +50,20 @@ public class InternalPelajaran extends javax.swing.JInternalFrame {
 
     public static void setRegister(Registry register) {
         InternalPelajaran.register = register;
+    }
+
+    public JTextField getTxtIdKelas() {
+        return txtIdKelas;
+    }
+
+    public JTextField getTxtIdKitab() {
+        return txtIdKitab;
+    }
+
+    
+
+    public JTextField getTxtId() {
+        return txtId;
     }
     
     
@@ -54,13 +83,13 @@ public class InternalPelajaran extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
-        cboKelas = new javax.swing.JComboBox();
-        cboKitab = new javax.swing.JComboBox();
         btnTambahKelas = new javax.swing.JButton();
         btnTambahKitab = new javax.swing.JButton();
         btnTambah = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         btnHapus = new javax.swing.JButton();
+        txtIdKelas = new javax.swing.JTextField();
+        txtIdKitab = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelPelajaran = new javax.swing.JTable();
         jToolBar1 = new javax.swing.JToolBar();
@@ -91,14 +120,10 @@ public class InternalPelajaran extends javax.swing.JInternalFrame {
         jLabel1.setText("ID :");
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText("Kelas :");
+        jLabel2.setText("ID Kelas :");
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel3.setText("Kitab :");
-
-        cboKelas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        cboKitab.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jLabel3.setText("ID Kitab :");
 
         btnTambahKelas.setText("+");
         btnTambahKelas.setToolTipText("Tambah Kelas");
@@ -111,6 +136,10 @@ public class InternalPelajaran extends javax.swing.JInternalFrame {
         btnEdit.setText("Edit");
 
         btnHapus.setText("Hapus");
+
+        txtIdKelas.setEnabled(false);
+
+        txtIdKitab.setEnabled(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -125,14 +154,14 @@ public class InternalPelajaran extends javax.swing.JInternalFrame {
                         .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cboKelas, 0, 106, Short.MAX_VALUE)
-                    .addComponent(cboKitab, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+                    .addComponent(txtIdKelas)
+                    .addComponent(txtIdKitab))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnTambahKelas)
                     .addComponent(btnTambahKitab))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 163, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnHapus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -150,15 +179,15 @@ public class InternalPelajaran extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(cboKelas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnTambahKelas)
-                    .addComponent(btnEdit))
+                    .addComponent(btnEdit)
+                    .addComponent(txtIdKelas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(cboKitab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnTambahKitab)
-                    .addComponent(btnHapus))
+                    .addComponent(btnHapus)
+                    .addComponent(txtIdKitab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -208,7 +237,7 @@ public class InternalPelajaran extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -222,8 +251,6 @@ public class InternalPelajaran extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnTambah;
     private javax.swing.JButton btnTambahKelas;
     private javax.swing.JButton btnTambahKitab;
-    private javax.swing.JComboBox cboKelas;
-    private javax.swing.JComboBox cboKitab;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -236,6 +263,49 @@ public class InternalPelajaran extends javax.swing.JInternalFrame {
     private javax.swing.JTable tabelPelajaran;
     private javax.swing.JTextField txtDataSeleksi;
     private javax.swing.JTextField txtId;
+    private javax.swing.JTextField txtIdKelas;
+    private javax.swing.JTextField txtIdKitab;
     private javax.swing.JTextField txtJumlahPelajaran;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void onChange(PelajaranModel model) {
+        txtId.setText(String.valueOf(model.getId()));
+        txtIdKelas.setText(String.valueOf(model.getIdKelas()));
+        txtIdKitab.setText(String.valueOf(model.getIdKitab()));
+    }
+
+    @Override
+    public void onInsert(Pelajaran pelajaran) {
+        model.add(pelajaran);
+        
+    }
+
+    @Override
+    public void onUpdate(Pelajaran pelajaran) {
+        int index = tabelPelajaran.getSelectedRow();
+        model.set(index, pelajaran);
+    }
+
+    @Override
+    public void onDelete() {
+        int index = tabelPelajaran.getSelectedRow();
+        model.remove(index);
+    }
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        try{
+            Pelajaran modelPelajaran = model.get(tabelPelajaran.getSelectedRow());
+            txtId.setText(String.valueOf(modelPelajaran.getId()));
+            txtIdKelas.setText(String.valueOf(modelPelajaran.getIdKelas()));
+            txtIdKitab.setText(String.valueOf(modelPelajaran.getIdKitab()));
+        }catch(IndexOutOfBoundsException ex){
+            
+        }
+    }
+
+    
+    
+    
 }

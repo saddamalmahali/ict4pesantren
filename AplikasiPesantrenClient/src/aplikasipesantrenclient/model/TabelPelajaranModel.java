@@ -39,7 +39,7 @@ public class TabelPelajaranModel extends AbstractTableModel{
         switch(columnIndex){
             case 0 : return list.get(rowIndex).getId();
             case 1 : return list.get(rowIndex).getNamaKelas();
-            case 2 : return list.get(rowIndex).getNamakitab();
+            case 2 : return list.get(rowIndex).getNamaKitab();
             default : return null;
         }
     

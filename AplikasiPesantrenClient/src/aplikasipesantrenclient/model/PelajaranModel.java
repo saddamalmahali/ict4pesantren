@@ -13,6 +13,7 @@ import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,11 +30,16 @@ public class PelajaranModel {
     private String namaKitab;
     private PelajaranListener listener;
     private PelajaranDao dao;
-    
+    private String host;
+    private int port;
     private PelajaranKoneksi koneksi;
     
     public PelajaranModel() {
          koneksi = new PelajaranKoneksi();       
+    }
+    public PelajaranModel(String host, int port){
+        this.host = host;
+        this.port = port;
     }
     
     
@@ -112,13 +118,43 @@ public class PelajaranModel {
         }
     }
     
-    public void insertPelajaran(String host,int port) throws RemoteException, PelajaranException, AccessException, NotBoundException{
+    public void resetPelajaran(){
+        setId(0);
+        setIdKelas(0);
+        setIdKitab(0);
+    }
+    
+    public void insertPelajaran() throws RemoteException, PelajaranException, AccessException, NotBoundException{
         dao = (PelajaranDao) koneksi.getKoneksi(host, port).lookup("pelajaran");
         Pelajaran pelajaran = new Pelajaran();
         pelajaran.setId(id);
         pelajaran.setIdKelas(idKelas);
         pelajaran.setIdKitab(idKitab);
         dao.insertPelajaran(pelajaran);
+        fireOnInsert(pelajaran);
         System.out.println("Pelajaran berhasil dimasukan...");
     }
+    
+    public void updatePelajaran()throws RemoteException, PelajaranException, AccessException, NotBoundException{
+        dao = (PelajaranDao) koneksi.getKoneksi(host, port).lookup("pelajaran");
+        Pelajaran pelajaran = new Pelajaran();
+        
+        pelajaran.setIdKelas(idKelas);
+        pelajaran.setIdKitab(idKitab);
+        dao.updatePelajaran(id, pelajaran);
+        fireOnUpdate(pelajaran);
+    }
+    
+    public void deletePelajaran()throws RemoteException, PelajaranException, AccessException, NotBoundException{
+        dao = (PelajaranDao) koneksi.getKoneksi(host, port).lookup("pelajaran");
+        dao.deletePelajaran(id);
+        fireOnDelete();
+    }
+    
+    public List<Pelajaran> getAllPelajaran() throws RemoteException, NotBoundException, PelajaranException{
+        dao = (PelajaranDao) koneksi.getKoneksi(host, port).lookup("pelajaran");
+        
+        return  dao.getPelajaranKelas();
+    }
+    
 }

@@ -59,7 +59,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="301" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="305" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jToolBar1" min="-2" pref="25" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -91,16 +91,16 @@
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="txtId" min="-2" pref="73" max="-2" attributes="0"/>
-                      <Component id="cboKelas" pref="106" max="32767" attributes="0"/>
-                      <Component id="cboKitab" alignment="0" max="32767" attributes="0"/>
+                      <Component id="txtId" pref="73" max="32767" attributes="0"/>
+                      <Component id="txtIdKelas" max="32767" attributes="0"/>
+                      <Component id="txtIdKitab" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="btnTambahKelas" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnTambahKitab" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnTambahKelas" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnTambahKitab" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="163" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="btnEdit" max="32767" attributes="0"/>
                       <Component id="btnHapus" max="32767" attributes="0"/>
@@ -122,16 +122,16 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cboKelas" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnTambahKelas" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnEdit" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtIdKelas" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cboKitab" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnTambahKitab" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnHapus" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtIdKitab" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -148,40 +148,16 @@
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="Kelas :"/>
+            <Property name="text" type="java.lang.String" value="ID Kelas :"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="Kitab :"/>
+            <Property name="text" type="java.lang.String" value="ID Kitab :"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtId">
-        </Component>
-        <Component class="javax.swing.JComboBox" name="cboKelas">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
-              </StringArray>
-            </Property>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JComboBox" name="cboKitab">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
-              </StringArray>
-            </Property>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btnTambahKelas">
           <Properties>
@@ -208,6 +184,16 @@
         <Component class="javax.swing.JButton" name="btnHapus">
           <Properties>
             <Property name="text" type="java.lang.String" value="Hapus"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtIdKelas">
+          <Properties>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtIdKitab">
+          <Properties>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
       </SubComponents>
