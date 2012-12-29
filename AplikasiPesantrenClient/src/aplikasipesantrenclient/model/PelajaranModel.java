@@ -58,6 +58,7 @@ public class PelajaranModel {
 
     public void setId(int id) {
         this.id = id;
+        fireOnChange();
     }
 
     public int getIdKelas() {
@@ -66,6 +67,7 @@ public class PelajaranModel {
 
     public void setIdKelas(int idKelas) {
         this.idKelas = idKelas;
+        fireOnChange();
     }
 
     public int getIdKitab() {
@@ -74,6 +76,7 @@ public class PelajaranModel {
 
     public void setIdKitab(int idKitab) {
         this.idKitab = idKitab;
+        fireOnChange();
     }
 
     public String getNamaKelas() {
@@ -134,6 +137,12 @@ public class PelajaranModel {
         }
     }
     
+    public void resetPelajaran(){
+        setId(0);
+        setIdKelas(0);
+        setIdKitab(0);
+    }
+    
     public void insertPelajaran() throws RemoteException, PelajaranException, AccessException, NotBoundException{
         dao = (PelajaranDao) koneksi.getKoneksi(host, port).lookup("pelajaran");
         Pelajaran pelajaran = new Pelajaran();
@@ -142,6 +151,7 @@ public class PelajaranModel {
         pelajaran.setIdKitab(idKitab);
         dao.insertPelajaran(pelajaran);
         System.out.println("Pelajaran berhasil dimasukan...");
+        fireOnInsert(pelajaran);
     }
     
     public void updatePelajaran()throws RemoteException, PelajaranException, AccessException, NotBoundException{
@@ -152,12 +162,14 @@ public class PelajaranModel {
         p.setIdKitab(idKitab);
         dao.updatePelajaran(id, p);
         System.out.println("Pelajaran berhasil diupdate...");
+        fireOnUpdate(p);
     }
     
     public void deletePelajaran()throws RemoteException, PelajaranException, AccessException, NotBoundException{
         dao = (PelajaranDao) koneksi.getKoneksi(host, port).lookup("pelajaran");
         dao.deletePelajaran(id);
         System.out.println("Pelajaran berhasil dihapus....");
+        fireOnDelete();
     }
     
     public void getPelajaran()throws RemoteException, PelajaranException, AccessException, NotBoundException{

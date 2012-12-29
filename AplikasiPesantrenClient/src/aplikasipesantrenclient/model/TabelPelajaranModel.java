@@ -20,6 +20,12 @@ public class TabelPelajaranModel extends AbstractTableModel{
     public List<Pelajaran> getList() {
         return list;
     }
+
+    public void setList(List<Pelajaran> list) {
+        this.list = list;
+    }
+    
+    
     
     
     
@@ -38,8 +44,8 @@ public class TabelPelajaranModel extends AbstractTableModel{
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch(columnIndex){
             case 0 : return list.get(rowIndex).getId();
-            case 1 : return list.get(rowIndex).getNamaKelas();
-            case 2 : return list.get(rowIndex).getNamakitab();
+            case 1 : return list.get(rowIndex).getIdKelas();
+            case 2 : return list.get(rowIndex).getIdKitab();
             default : return null;
         }
     
