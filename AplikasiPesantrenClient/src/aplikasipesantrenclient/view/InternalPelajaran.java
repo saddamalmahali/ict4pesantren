@@ -5,6 +5,7 @@
 package aplikasipesantrenclient.view;
 
 import aplikasipesantren.entity.Pelajaran;
+import aplikasipesantrenclient.controller.PelajaranController;
 import aplikasipesantrenclient.model.PelajaranModel;
 import aplikasipesantrenclient.model.TabelPelajaranModel;
 import aplikasipesantrenclient.model.listener.PelajaranListener;
@@ -21,10 +22,10 @@ import javax.swing.event.ListSelectionListener;
  * @author Saddam
  */
 public class InternalPelajaran extends javax.swing.JInternalFrame implements PelajaranListener, ListSelectionListener{
-    private TabelPelajaranModel model;
+    private TabelPelajaranModel tabelmodel;
     private static Registry register;
-    private PelajaranModel pModel;
-    
+    private PelajaranModel model;
+    private PelajaranController controller;
 
     public InternalPelajaran(Registry r) {
         register = r;
@@ -35,12 +36,18 @@ public class InternalPelajaran extends javax.swing.JInternalFrame implements Pel
      * Creates new form InternalPelajaran
      */
     public InternalPelajaran() {
-        model = new TabelPelajaranModel();
-        pModel = new PelajaranModel("127.0.0.1", 4444);
+        tabelmodel = new TabelPelajaranModel();
+        model = new PelajaranModel("127.0.0.1", 4444);
         initComponents();
-        pModel.setListener(this);
-        tabelPelajaran.setModel(model);
+        model.setListener(this);
+        
+        
         tabelPelajaran.getSelectionModel().addListSelectionListener(this);
+        tabelPelajaran.setModel(tabelmodel);
+        
+        controller = new PelajaranController();
+        controller.setModel(model);
+        
         
     }
 
@@ -132,14 +139,25 @@ public class InternalPelajaran extends javax.swing.JInternalFrame implements Pel
         btnTambahKitab.setToolTipText("Tambah Kitab");
 
         btnTambah.setText("Tambah");
+        btnTambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTambahActionPerformed(evt);
+            }
+        });
 
         btnEdit.setText("Edit");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
 
         btnHapus.setText("Hapus");
-
-        txtIdKelas.setEnabled(false);
-
-        txtIdKitab.setEnabled(false);
+        btnHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHapusActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -245,6 +263,19 @@ public class InternalPelajaran extends javax.swing.JInternalFrame implements Pel
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
+        controller.insertPelajaran(this);
+    }//GEN-LAST:event_btnTambahActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        controller.updatePelajaran(this);
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+        controller.hapusPelajaran(this);
+    }//GEN-LAST:event_btnHapusActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnHapus;
@@ -277,26 +308,26 @@ public class InternalPelajaran extends javax.swing.JInternalFrame implements Pel
 
     @Override
     public void onInsert(Pelajaran pelajaran) {
-        model.add(pelajaran);
+        tabelmodel.add(pelajaran);
         
     }
 
     @Override
     public void onUpdate(Pelajaran pelajaran) {
         int index = tabelPelajaran.getSelectedRow();
-        model.set(index, pelajaran);
+        tabelmodel.set(index, pelajaran);
     }
 
     @Override
     public void onDelete() {
         int index = tabelPelajaran.getSelectedRow();
-        model.remove(index);
+        tabelmodel.remove(index);
     }
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
         try{
-            Pelajaran modelPelajaran = model.get(tabelPelajaran.getSelectedRow());
+            Pelajaran modelPelajaran = tabelmodel.get(tabelPelajaran.getSelectedRow());
             txtId.setText(String.valueOf(modelPelajaran.getId()));
             txtIdKelas.setText(String.valueOf(modelPelajaran.getIdKelas()));
             txtIdKitab.setText(String.valueOf(modelPelajaran.getIdKitab()));

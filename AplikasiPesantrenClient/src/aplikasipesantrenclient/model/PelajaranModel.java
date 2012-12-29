@@ -60,6 +60,7 @@ public class PelajaranModel {
 
     public void setId(int id) {
         this.id = id;
+        //fireOnChange();
     }
 
     public int getIdKelas() {
@@ -68,6 +69,7 @@ public class PelajaranModel {
 
     public void setIdKelas(int idKelas) {
         this.idKelas = idKelas;
+        //fireOnChange();
     }
 
     public int getIdKitab() {
@@ -131,7 +133,7 @@ public class PelajaranModel {
         pelajaran.setIdKelas(idKelas);
         pelajaran.setIdKitab(idKitab);
         dao.insertPelajaran(pelajaran);
-        fireOnInsert(pelajaran);
+        //fireOnInsert(pelajaran);
         System.out.println("Pelajaran berhasil dimasukan...");
     }
     
