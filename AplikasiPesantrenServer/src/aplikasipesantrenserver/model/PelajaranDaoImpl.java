@@ -42,6 +42,7 @@ public class PelajaranDaoImpl extends UnicastRemoteObject implements PelajaranDa
     
     @Override
     public void insertPelajaran(Pelajaran pelajaran) throws RemoteException, PelajaranException {
+        
         PreparedStatement pstat = null;
         
         try{
