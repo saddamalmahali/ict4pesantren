@@ -33,7 +33,7 @@ public class GedungDaoImpl extends UnicastRemoteObject implements GedungDao{
     
     
     public GedungDaoImpl()throws SQLException, RemoteException{
-        conn = Koneksi.getConn();
+        this.conn = Koneksi.getConn();
     }
     @Override
     public void insertGedung(Gedung gedung) throws RemoteException, GedungException {

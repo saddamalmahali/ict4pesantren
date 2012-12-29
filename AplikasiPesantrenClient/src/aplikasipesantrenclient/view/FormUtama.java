@@ -4,17 +4,32 @@
  */
 package aplikasipesantrenclient.view;
 
+import java.awt.Dimension;
+import java.awt.GraphicsConfiguration;
+import java.awt.Toolkit;
+import java.rmi.registry.Registry;
+
 /**
  *
  * @author Saddam
  */
 public class FormUtama extends javax.swing.JFrame {
+    
+    Registry register;
 
+    public FormUtama(Registry register) {
+        this.register = register;
+    }
+    
+    
+    
     /**
      * Creates new form FormUtama
      */
     public FormUtama() {
         initComponents();
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation(dimension.width/2-getWidth()/2, dimension.height/2-getHeight()/2);
     }
 
     /**
@@ -28,7 +43,7 @@ public class FormUtama extends javax.swing.JFrame {
 
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        mniLogin = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -37,9 +52,19 @@ public class FormUtama extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jMenu1.setText("File");
+        jMenu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu1ActionPerformed(evt);
+            }
+        });
 
-        jMenuItem2.setText("Login");
-        jMenu1.add(jMenuItem2);
+        mniLogin.setText("Login");
+        mniLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniLoginActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mniLogin);
 
         jMenuItem3.setText("Exit");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
@@ -81,6 +106,17 @@ public class FormUtama extends javax.swing.JFrame {
         System.exit(1);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
+    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu1ActionPerformed
+
+    private void mniLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniLoginActionPerformed
+        Login loginForm = new Login(this, rootPaneCheckingEnabled);
+        
+        
+        loginForm.setVisible(true);
+    }//GEN-LAST:event_mniLoginActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -120,8 +156,8 @@ public class FormUtama extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem mniLogin;
     // End of variables declaration//GEN-END:variables
 }

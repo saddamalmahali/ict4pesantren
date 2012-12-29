@@ -42,7 +42,7 @@ public class SantriDaoImpl implements SantriDao{
     public SantriDaoImpl()throws RemoteException, SantriException{
         if(conn == null){
             try {
-                conn = Koneksi.getConn();
+                this.conn = Koneksi.getConn();
             } catch (SQLException ex) {
                 throw new SantriException("Gagal menyambung database dengan pesan : "+ex.getMessage());
             }

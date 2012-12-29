@@ -33,7 +33,7 @@ public class KitabDaoImpl extends UnicastRemoteObject implements KitabDao{
     private final String qGetAll = "SELECT * FROM KITAB";
 
     public KitabDaoImpl() throws RemoteException, SQLException{
-    conn = Koneksi.getConn();
+        this.conn = Koneksi.getConn();
     }
     
     

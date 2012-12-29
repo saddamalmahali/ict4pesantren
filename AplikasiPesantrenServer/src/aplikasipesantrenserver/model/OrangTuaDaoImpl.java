@@ -38,7 +38,7 @@ public class OrangTuaDaoImpl implements OrangTuaDao{
         
         if(conn==null){
             try {
-                conn = Koneksi.getConn();
+                this.conn = Koneksi.getConn();
             } catch (SQLException ex) {
                 throw new OrangTuaException("Gagal Menyambung ke database dengan pesan : "+ex.getMessage());
             }

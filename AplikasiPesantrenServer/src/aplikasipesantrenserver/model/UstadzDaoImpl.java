@@ -38,7 +38,7 @@ public class UstadzDaoImpl extends UnicastRemoteObject implements UstadzDao{
     
     public UstadzDaoImpl()throws RemoteException, SQLException{
         if(conn==null){
-            conn=Koneksi.getConn();
+            this.conn=Koneksi.getConn();
         }else{
             return;
         }

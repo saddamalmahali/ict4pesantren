@@ -4,24 +4,39 @@
  */
 package aplikasipesantrenclient.view;
 
+import java.awt.GraphicsConfiguration;
 import java.beans.PropertyVetoException;
+import java.rmi.registry.Registry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Saddam
  */
 public class FormKepesantrenan extends javax.swing.JFrame {
-
+    private InternalSantri formSantri;
+    private InternalKamar formKamar = new InternalKamar();
+    private InternalPelajaran formPelajaran = new InternalPelajaran();
+    private InternalUstadz formUstadz = new InternalUstadz();
     /**
      * Creates new form FormKepesantrenan
      */
+    private static Registry registry;
     public FormKepesantrenan() {
         initComponents();
-        
+         formSantri = new InternalSantri();
+        formSantri.setVisible(false);
         setSize(800, 600);
+        
     }
+
+    public FormKepesantrenan(Registry r) {
+        registry = r;
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -33,23 +48,53 @@ public class FormKepesantrenan extends javax.swing.JFrame {
     private void initComponents() {
 
         jDesktopPane1 = new javax.swing.JDesktopPane();
+        jSplitPane1 = new javax.swing.JSplitPane();
+        jLabel1 = new javax.swing.JLabel();
+        progres = new javax.swing.JProgressBar();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        Pelajaran = new javax.swing.JMenu();
+        mniKamar = new javax.swing.JMenuItem();
+        mniPelajaran = new javax.swing.JMenuItem();
+        mniUstadz = new javax.swing.JMenuItem();
         mniSantri = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jMenu1.setText("Master");
+        jLabel1.setText("Progress");
+        jSplitPane1.setLeftComponent(jLabel1);
+        jSplitPane1.setRightComponent(progres);
 
-        jMenuItem2.setText("Kitab");
-        jMenu1.add(jMenuItem2);
+        Pelajaran.setText("Master");
+        Pelajaran.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PelajaranActionPerformed(evt);
+            }
+        });
 
-        jMenuItem1.setText("Ustadz");
-        jMenu1.add(jMenuItem1);
+        mniKamar.setText("Kamar");
+        mniKamar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniKamarActionPerformed(evt);
+            }
+        });
+        Pelajaran.add(mniKamar);
+
+        mniPelajaran.setText("Pelajaran");
+        mniPelajaran.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniPelajaranActionPerformed(evt);
+            }
+        });
+        Pelajaran.add(mniPelajaran);
+
+        mniUstadz.setText("Ustadz");
+        mniUstadz.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniUstadzActionPerformed(evt);
+            }
+        });
+        Pelajaran.add(mniUstadz);
 
         mniSantri.setText("Santri");
         mniSantri.addActionListener(new java.awt.event.ActionListener() {
@@ -57,12 +102,9 @@ public class FormKepesantrenan extends javax.swing.JFrame {
                 mniSantriActionPerformed(evt);
             }
         });
-        jMenu1.add(mniSantri);
+        Pelajaran.add(mniSantri);
 
-        jMenuItem4.setText("Gedung");
-        jMenu1.add(jMenuItem4);
-
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(Pelajaran);
 
         jMenu2.setText("View");
         jMenuBar1.add(jMenu2);
@@ -74,28 +116,97 @@ public class FormKepesantrenan extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void mniSantriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniSantriActionPerformed
-        InternalSantri formSantri = new InternalSantri();
-        
-        jDesktopPane1.add(formSantri);
-        if(formSantri.isMaximum() == false){
+         
+         
+            
+        if(formSantri.isVisible() == true){          
+           JOptionPane.showMessageDialog(rootPane, "Jendela Santri sudah aktif");
+            
+        }else{
+            jDesktopPane1.add(formSantri);
             try {
-                formSantri.setMaximum(true);
+                    formSantri.setMaximum(true);
             } catch (PropertyVetoException ex) {
-                Logger.getLogger(FormKepesantrenan.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(FormKepesantrenan.class.getName()).log(Level.SEVERE, null, ex);
             }
+            formSantri.setVisible(true);
         }
-        formSantri.setVisible(true);
+        
+        
     }//GEN-LAST:event_mniSantriActionPerformed
+
+    private void mniKamarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniKamarActionPerformed
+        
+        if(formKamar.isVisible()==true){
+            JOptionPane.showMessageDialog(rootPane, "Jendela Kamar sudah aktif");
+        }else{
+            jDesktopPane1.add(formKamar);
+        
+            if(formKamar.isMaximum()==false){
+                try {
+                    formKamar.setMaximum(true);
+                } catch (PropertyVetoException ex) {
+                
+                }
+            }
+        
+            formKamar.setVisible(true);
+        }
+    }//GEN-LAST:event_mniKamarActionPerformed
+
+    private void mniPelajaranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniPelajaranActionPerformed
+        if(formPelajaran.isVisible()==true){
+            JOptionPane.showMessageDialog(rootPane, "Jendela Pelajaran sudah aktif");
+        }else{
+            jDesktopPane1.add(formPelajaran);
+            if(formPelajaran.isMaximum()==false){
+                try {
+                    formPelajaran.setMaximum(true);
+                } catch (PropertyVetoException ex) {
+                
+                }
+            }
+            formPelajaran.setVisible(true);
+        }        
+    }//GEN-LAST:event_mniPelajaranActionPerformed
+
+    private void mniUstadzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniUstadzActionPerformed
+        if(formUstadz.isVisible()==true){
+            JOptionPane.showMessageDialog(rootPane, "Jendela Ustadz sudah aktif");
+        }else{
+            jDesktopPane1.add(formUstadz);
+        
+            if(formUstadz.isMaximum() == false){
+                try {
+                    formUstadz.setMaximum(true);
+                } catch (PropertyVetoException ex) {
+                
+                }
+            }
+        
+            formUstadz.setVisible(true);
+        }        
+    }//GEN-LAST:event_mniUstadzActionPerformed
+
+    private void PelajaranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PelajaranActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PelajaranActionPerformed
 
     /**
      * @param args the command line arguments
@@ -132,13 +243,16 @@ public class FormKepesantrenan extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu Pelajaran;
     private javax.swing.JDesktopPane jDesktopPane1;
-    private javax.swing.JMenu jMenu1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JMenuItem mniKamar;
+    private javax.swing.JMenuItem mniPelajaran;
     private javax.swing.JMenuItem mniSantri;
+    private javax.swing.JMenuItem mniUstadz;
+    private javax.swing.JProgressBar progres;
     // End of variables declaration//GEN-END:variables
 }

@@ -32,7 +32,7 @@ public class KelasDaoImpl extends UnicastRemoteObject implements KelasDao{
     private final String qGetAllKelas = "SELECT * FROM KELAS";
     
     public KelasDaoImpl()throws RemoteException, SQLException{
-        conn = Koneksi.getConn();
+        this.conn = Koneksi.getConn();
     }
     
     @Override

@@ -32,7 +32,7 @@ public class KamarDaoImpl extends UnicastRemoteObject implements KamarDao{
     private final String qNamaKamar = "SELECT * FROM KAMAR";
     
     public KamarDaoImpl()throws RemoteException, SQLException{
-        conn = Koneksi.getConn();
+        this.conn = Koneksi.getConn();
     }
     
     @Override

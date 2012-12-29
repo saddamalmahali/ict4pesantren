@@ -14,9 +14,13 @@ import java.sql.SQLException;
  */
 public class Koneksi {
     private static Connection conn;
-    private static String url = "";
-    private static String userName = "";
+    private static String url = "jdbc:mysql://localhost:3306/aplikasi_pesantren?zeroDateTimeBehavior=convertToNull";
+    private static String userName = "root";
     private static String password = "";
+    
+    public Koneksi(){
+        
+    }
     public static Connection getConn() throws SQLException {
         if(conn==null){
             conn = DriverManager.getConnection(url,userName, password);

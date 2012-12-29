@@ -20,4 +20,5 @@ public interface PelajaranDao extends Remote{
     public void updatePelajaran(int id, Pelajaran pelajaran)throws RemoteException, PelajaranException;
     public void deletePelajaran(int id)throws RemoteException, PelajaranException;
     public List<Pelajaran> getPelajaran()throws RemoteException, PelajaranException;
+    public List<Pelajaran> getPelajaranKelas()throws RemoteException, PelajaranException;
 }
