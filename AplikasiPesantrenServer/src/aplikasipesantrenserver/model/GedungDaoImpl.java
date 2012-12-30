@@ -30,6 +30,8 @@ public class GedungDaoImpl extends UnicastRemoteObject implements GedungDao{
     private String qUpdate = "UPDATE GEDUNG SET nama=? WHERE id=?";
     private String qDelete = "DELETE FROM GEDUNG id = ?";
     private String qSelectAll = "SELECT * FROM GEDUNG";
+    private String qSelectNamaGedung = "select * from gedung";
+    private String qSelectByName = "select * from gedung where nama=";
     
     
     public GedungDaoImpl()throws SQLException, RemoteException{
@@ -173,6 +175,76 @@ public class GedungDaoImpl extends UnicastRemoteObject implements GedungDao{
             }
         }
         return listGedung;        
+    }
+
+    @Override
+    public List<Gedung> getGedungName() throws RemoteException, GedungException {
+        Statement s = null;
+        ResultSet rs = null;
+        List<Gedung> listGedung = new ArrayList<Gedung>();
+        try{
+            conn.setAutoCommit(false);
+            s = conn.createStatement();
+            rs = s.executeQuery(qSelectNamaGedung);
+            while(rs.next()){
+                Gedung gedung = new Gedung();
+                gedung.setId(rs.getInt("id"));
+                gedung.setNamaGedung(rs.getString("nama"));
+                listGedung.add(gedung);
+            }
+            conn.commit();
+            return listGedung;
+            
+        }catch(SQLException ex){
+            try {
+                conn.rollback();
+            } catch (SQLException ex1) {
+                
+            }
+            throw new GedungException("Gagal mengambil list gedung dengan pesan : "+ex.getMessage());
+        }finally{
+            try {
+                conn.setAutoCommit(true);
+                rs.close();
+                s.close();
+            } catch (SQLException ex) {
+                
+            }
+        }
+            
+    }
+
+    @Override
+    public Gedung getIdGedung(String namaGedung) throws RemoteException, GedungException {
+        Statement s = null;
+        ResultSet rs = null;
+        List<Gedung> listGedung = new ArrayList<Gedung>();
+        try{
+            conn.setAutoCommit(false);
+            s = conn.createStatement();
+            rs = s.executeQuery(qInsert+namaGedung);
+            Gedung gedung = new Gedung();
+            gedung.setId(rs.getInt("id"));
+            gedung.setNamaGedung(rs.getString("nama"));
+                        
+            conn.commit();
+            return gedung;
+        }catch(SQLException ex){
+            try {
+                conn.rollback();
+            } catch (SQLException ex1) {
+                
+            }
+            throw new GedungException("gagal mengambil id gedung dengan pesan : "+ex.getMessage());
+        }finally{
+            try {
+                conn.setAutoCommit(true);
+                rs.close();
+                s.close();
+            } catch (SQLException ex) {
+                
+            }
+        }
     }
     
 }

@@ -20,5 +20,7 @@ public interface GedungDao extends Remote{
     public void updateGedung(int id, Gedung gedung)throws RemoteException, GedungException;
     public void deleteGedung(int id)throws RemoteException, GedungException;
     public List<Gedung> getAllGedung()throws RemoteException, GedungException;
+    public List<Gedung> getGedungName()throws RemoteException, GedungException;
+    public Gedung getIdGedung(String namaGedung)throws RemoteException, GedungException;
     
 }
