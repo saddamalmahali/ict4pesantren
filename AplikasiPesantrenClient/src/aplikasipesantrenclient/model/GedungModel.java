@@ -96,6 +96,8 @@ public class GedungModel {
         dao = (GedungDao) koneksi.getKoneksi(host, port).lookup("gedung");
         List<Gedung> listGedung = new ArrayList<Gedung>();
         listGedung = dao.getAllGedung();
+        
+        
         return listGedung;
     }
     
@@ -108,4 +110,20 @@ public class GedungModel {
         return gedung;
     }
     
+    public int getId(String namaGedung)throws RemoteException, NotBoundException, GedungException{
+        dao = (GedungDao) koneksi.getKoneksi(host, port).lookup("gedung");
+        int id = dao.getIdGedung(namaGedung).getId();
+        return id;
+    }
+    
+    public String[] getAllNamaGedung()throws RemoteException, NotBoundException, GedungException{
+        dao = (GedungDao) koneksi.getKoneksi(host, port).lookup("gedung");
+        String[] namaGedung = new String[100];
+        List<Gedung> listGedung = new ArrayList<Gedung>();
+        listGedung = dao.getAllGedung();
+        for(int i=0; id<listGedung.size(); i++){
+            namaGedung[i]=listGedung.get(i).getNamaGedung();
+        }
+        return namaGedung;
+    }
 }

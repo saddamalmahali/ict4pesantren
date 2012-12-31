@@ -4,15 +4,20 @@
  */
 package aplikasipesantrenclient;
 
+import aplikasipesantren.Exception.GedungException;
 import aplikasipesantren.Exception.PelajaranException;
+import aplikasipesantren.entity.Gedung;
 import aplikasipesantren.entity.Pelajaran;
 import aplikasipesantren.services.PelajaranDao;
+import aplikasipesantrenclient.model.GedungModel;
 import aplikasipesantrenclient.model.PelajaranModel;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -27,18 +32,15 @@ public class AplikasiPesantrenClient {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws RemoteException, PelajaranException, AccessException, NotBoundException {
+    public static void main(String[] args) throws RemoteException, PelajaranException, AccessException, NotBoundException, GedungException {
              String host = "127.0.0.1";
-             PelajaranModel model = new PelajaranModel();
-            
-            
-             Pelajaran p = new Pelajaran();
-             model.setId(104);
-             model.setIdKelas(1002);
-             model.setIdKitab(1004);
-             model.setHost(host);
+             GedungModel model = new GedungModel();
+             model.setHost("127.0.0.1");
              model.setPort(4444);
-             model.getPelajaran();
+             
+             
+             
+             
     }
     
     

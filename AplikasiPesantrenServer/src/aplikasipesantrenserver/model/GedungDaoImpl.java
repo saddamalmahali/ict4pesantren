@@ -46,7 +46,7 @@ public class GedungDaoImpl extends UnicastRemoteObject implements GedungDao{
             pstat = conn.prepareStatement(qInsert);
             pstat.setInt(1, gedung.getId());
             pstat.setString(2, gedung.getNamaGedung());
-            pstat.executeQuery();
+            pstat.executeUpdate();
             
             conn.commit();
         }catch(SQLException ex){
@@ -154,7 +154,9 @@ public class GedungDaoImpl extends UnicastRemoteObject implements GedungDao{
                 gedung.setNamaGedung(rs.getString("nama"));
              listGedung.add(gedung);
             }
-            conn.commit();            
+            
+            conn.commit();  
+            return listGedung;
         }catch(SQLException ex){
             try {
                 conn.rollback();
@@ -174,7 +176,7 @@ public class GedungDaoImpl extends UnicastRemoteObject implements GedungDao{
                 
             }
         }
-        return listGedung;        
+                
     }
 
     @Override
@@ -222,10 +224,12 @@ public class GedungDaoImpl extends UnicastRemoteObject implements GedungDao{
         try{
             conn.setAutoCommit(false);
             s = conn.createStatement();
-            rs = s.executeQuery(qInsert+namaGedung);
+            rs = s.executeQuery(qSelectByName+"'"+namaGedung+"'");
             Gedung gedung = new Gedung();
-            gedung.setId(rs.getInt("id"));
-            gedung.setNamaGedung(rs.getString("nama"));
+            while(rs.next()){
+                gedung.setId(rs.getInt("id"));
+                gedung.setNamaGedung(rs.getString("nama"));
+            }
                         
             conn.commit();
             return gedung;
