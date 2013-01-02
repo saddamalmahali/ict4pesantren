@@ -7,7 +7,7 @@ package aplikasipesantrenclient.model;
 import aplikasipesantren.Exception.PelajaranException;
 import aplikasipesantren.entity.Pelajaran;
 import aplikasipesantren.services.PelajaranDao;
-import aplikasipesantrenclient.koneksi.PelajaranKoneksi;
+import aplikasipesantrenclient.koneksi.KlienKoneksi;
 import aplikasipesantrenclient.model.listener.PelajaranListener;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
@@ -34,10 +34,10 @@ public class PelajaranModel {
     int port = 0;
     String host = "";
     
-    private PelajaranKoneksi koneksi;
+    private KlienKoneksi koneksi;
     
     public PelajaranModel() {
-         koneksi = new PelajaranKoneksi();       
+         koneksi = new KlienKoneksi();       
     }
     
     

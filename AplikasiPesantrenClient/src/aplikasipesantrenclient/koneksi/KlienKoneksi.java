@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  *
  * @author Saddam
  */
-public class PelajaranKoneksi {
+public class KlienKoneksi {
     private Registry registry;
 
     public Registry getKoneksi(String host, int port){
@@ -25,7 +25,7 @@ public class PelajaranKoneksi {
             
             
         } catch (RemoteException ex) {
-            Logger.getLogger(PelajaranKoneksi.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(KlienKoneksi.class.getName()).log(Level.SEVERE, null, ex);
         } 
         
         return registry;

@@ -61,6 +61,7 @@ public class PelajaranController {
                 JOptionPane.showMessageDialog(view, "Gagal menambah Pelajaran dengan pesan : "+ex.getMessage());
             }
             JOptionPane.showMessageDialog(view, "Berhasil menambah Pelajaran...!");
+            
         }
     }
     

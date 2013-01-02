@@ -8,7 +8,7 @@ import aplikasipesantren.Exception.GedungException;
 import aplikasipesantren.entity.Gedung;
 import aplikasipesantren.services.GedungDao;
 import aplikasipesantrenclient.entitas.Koneksi;
-import aplikasipesantrenclient.koneksi.PelajaranKoneksi;
+import aplikasipesantrenclient.koneksi.KlienKoneksi;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -23,11 +23,11 @@ public class GedungModel {
     String namaGedung;
     int port = 0;
     String host = "";
-    PelajaranKoneksi koneksi;
+    KlienKoneksi koneksi;
     GedungDao dao;
 
     public GedungModel() {
-        koneksi = new PelajaranKoneksi();
+        koneksi = new KlienKoneksi();
     }
     
     
@@ -83,6 +83,7 @@ public class GedungModel {
         gedung.setId(id);
         gedung.setNamaGedung(namaGedung);
         dao.updateGedung(id, gedung);
+        
         System.out.println("Gedung berhasil diupdate...");
     }
     
@@ -96,8 +97,7 @@ public class GedungModel {
         dao = (GedungDao) koneksi.getKoneksi(host, port).lookup("gedung");
         List<Gedung> listGedung = new ArrayList<Gedung>();
         listGedung = dao.getAllGedung();
-        
-        
+                
         return listGedung;
     }
     
@@ -124,6 +124,8 @@ public class GedungModel {
         for(int i=0; id<listGedung.size(); i++){
             namaGedung[i]=listGedung.get(i).getNamaGedung();
         }
+        
         return namaGedung;
     }
+    
 }

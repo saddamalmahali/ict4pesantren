@@ -4,18 +4,63 @@
  */
 package aplikasipesantrenclient.view;
 
+import aplikasipesantren.Exception.KamarException;
+import aplikasipesantren.entity.Kamar;
+import aplikasipesantren.services.KamarDao;
+import aplikasipesantrenclient.controller.KamarController;
+import aplikasipesantrenclient.model.KamarModel;
+import aplikasipesantrenclient.model.TabelKamarModel;
+import aplikasipesantrenclient.model.listener.KamarListener;
+import java.rmi.AccessException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 /**
  *
  * @author Saddam
  */
-public class InternalKamar extends javax.swing.JInternalFrame {
-
+public class InternalKamar extends javax.swing.JInternalFrame implements KamarListener, ListSelectionListener{
+    private DialogIsianKamar kamarView;
+    private TabelKamarModel tabelModel;
+    private KamarModel model;
+    private KamarController controller;
+    private DialogIsianKamar formIsianKamar;
+    private Registry r;
     /**
      * Creates new form InternalKamar
      */
-    public InternalKamar() {
-        initComponents();
+    
+    public InternalKamar(Registry r){
+        r = r;
     }
+    public InternalKamar() {
+        tabelModel = new TabelKamarModel();
+        formIsianKamar = new DialogIsianKamar(null, closable);
+        model = new KamarModel();
+        controller = new KamarController();
+        initComponents();
+        model.setListener(this);
+        model.setHost("127.0.0.1");
+        model.setPort(4444);
+        controller.setModel(model);
+        tabelKamar.setModel(tabelModel);
+        loadDatabase();
+    }
+
+    public JTable getTabelKamar() {
+        return tabelKamar;
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -63,8 +108,18 @@ public class InternalKamar extends javax.swing.JInternalFrame {
         btnCari.setText("Cari Kamar");
 
         btnTambah.setText("Tambah");
+        btnTambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTambahActionPerformed(evt);
+            }
+        });
 
         tbnHapus.setText("Hapus");
+        tbnHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbnHapusActionPerformed(evt);
+            }
+        });
 
         btnPrint.setText("Print");
 
@@ -130,7 +185,7 @@ public class InternalKamar extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -140,6 +195,15 @@ public class InternalKamar extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
+        formIsianKamar.setVisible(true);
+    }//GEN-LAST:event_btnTambahActionPerformed
+
+    private void tbnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbnHapusActionPerformed
+        controller.deleteKamar(this);
+    }//GEN-LAST:event_tbnHapusActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCari;
     private javax.swing.JButton btnPrint;
@@ -156,4 +220,55 @@ public class InternalKamar extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtDataSelection;
     private javax.swing.JTextField txtKamarTersedia;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void onChange(KamarModel model) {
+        kamarView.getTxtId().setText(String.valueOf(model.getIdKamar()));
+        kamarView.getCboGedung().setSelectedItem(model.getNamaGedung());
+        kamarView.getTxtNamaKamar().setText(model.getNamaKamar());
+        kamarView.getTxtJumlah().setText(model.getJumlah());
+    }
+
+    @Override
+    public void onInsert(Kamar kamar) {
+        tabelModel.add(kamar);
+    }
+
+    @Override
+    public void onDelete() {
+        int index = tabelKamar.getSelectedRow();
+        tabelModel.remove(index);
+    }
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        try{
+            Kamar kamar = tabelModel.get(tabelKamar.getSelectedRow());
+            model.setIdKamar(kamar.getId());            
+            model.setNamaKamar(kamar.getNama());
+            model.setJumlah(kamar.getJumlah());
+        }catch(IndexOutOfBoundsException ex){
+            
+        }
+    }
+    
+    public void loadDatabase(){
+        
+        try {
+            Registry r = LocateRegistry.getRegistry("127.0.0.1", 4444);
+            KamarDao dao;
+            dao = (KamarDao) r.lookup("kamar");
+            List<Kamar> listKamar = new ArrayList<Kamar>();
+            listKamar = dao.getKamarKomplit();
+            tabelModel.setList(listKamar);
+        } catch (KamarException ex) {
+            Logger.getLogger(InternalKamar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (RemoteException ex) {
+            Logger.getLogger(InternalKamar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NotBoundException ex) {
+            Logger.getLogger(InternalKamar.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        
+        
+    }
 }
