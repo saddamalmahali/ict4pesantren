@@ -13,6 +13,7 @@ import java.io.Serializable;
 public class Kamar implements Serializable{
     private int id;
     private int idGedung;
+    private String namaGedung;
     private String nama;
     private String jumlah;
 
@@ -46,6 +47,14 @@ public class Kamar implements Serializable{
 
     public void setJumlah(String jumlah) {
         this.jumlah = jumlah;
+    }
+
+    public String getNamaGedung() {
+        return namaGedung;
+    }
+
+    public void setNamaGedung(String namaGedung) {
+        this.namaGedung = namaGedung;
     }
     
     

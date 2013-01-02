@@ -19,4 +19,6 @@ public interface KamarDao extends Remote{
     public void insertKamar(Kamar kamar)throws RemoteException, KamarException;
     public void deleteKamar(int id)throws RemoteException, KamarException;
     public List<Kamar> getAllKamar()throws RemoteException, KamarException;
+    public List<Kamar> getKamarKomplit()throws RemoteException, KamarException;
+    public Kamar getIdKamar(String nama)throws RemoteException, KamarException;
 }
