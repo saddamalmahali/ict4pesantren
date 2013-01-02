@@ -17,8 +17,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  *
@@ -26,10 +25,12 @@ import java.util.logging.Logger;
  */
 public class KamarDaoImpl extends UnicastRemoteObject implements KamarDao{
     private Connection conn = null;
-    private final String qInsert = "INSERT INTO KAMAR(id, id_gedung, blok, jumlah)";
+    private final String qInsert = "INSERT INTO KAMAR(id, id_gedung, nama, jumlah) VALUES(?,?,?,?)";
     private final String qUpdate = "UPDATE FROM KAMAR SET id_gedung=?, blok=?, jumlah=? WHERE id=?";
     private final String qDelete = "DELETE FROM KAMAR WHERE id=?";
     private final String qNamaKamar = "SELECT * FROM KAMAR";
+    private final String qGetIdKamar = "select * from kamar where nama=";
+    private final String qGetAllKamar = "select kamar.id, gedung.nama, kamar.nama, kamar.jumlah from kamar, gedung where kamar.id_gedung=gedung.id;";
     
     public KamarDaoImpl()throws RemoteException, SQLException{
         this.conn = Koneksi.getConn();
@@ -150,5 +151,79 @@ public class KamarDaoImpl extends UnicastRemoteObject implements KamarDao{
         }  
         
     }
-    
+
+    @Override
+    public List<Kamar> getKamarKomplit() throws RemoteException, KamarException {
+        Statement s = null;
+        ResultSet rs = null;
+        List<Kamar> listKamar = new ArrayList<Kamar>();
+        try{
+            conn.setAutoCommit(false);
+            s = conn.createStatement();
+            rs = s.executeQuery(qGetAllKamar);
+            while(rs.next()){
+                Kamar kamar = new Kamar();
+                kamar.setId(rs.getInt("kamar.id"));
+                kamar.setNamaGedung(rs.getString("gedung.nama"));
+                kamar.setNama(rs.getString("kamar.nama"));
+                kamar.setJumlah(rs.getString("kamar.jumlah"));
+                listKamar.add(kamar);
+            }
+            
+            conn.commit();            
+            return listKamar;
+        }catch(SQLException ex){
+            try {
+                conn.rollback();
+            } catch (SQLException ex1) {
+                
+            }
+            throw new KamarException("Gagal mengambil list kamar dengan pesan : "+ex.getMessage());
+        }finally{
+            try {
+                conn.setAutoCommit(true);
+                rs.close();
+                s.close();                
+            } catch (SQLException ex) {
+                
+            }
+        }
+    }
+
+    @Override
+    public Kamar getIdKamar(String nama) throws RemoteException, KamarException {
+        Statement s = null;
+        ResultSet rs = null;
+        try{
+            conn.setAutoCommit(false);
+            Kamar kamar = new Kamar();
+            s = conn.createStatement();
+            rs = s.executeQuery(qGetIdKamar+"'"+nama+"'");
+            while(rs.next()){
+                kamar.setId(rs.getInt("id"));
+                kamar.setIdGedung(rs.getInt("id_gedung"));
+                kamar.setNama(rs.getString("nama"));
+                kamar.setJumlah(rs.getString("jumlah"));
+            }
+            
+            conn.commit();
+            return kamar;
+        }catch(SQLException ex){
+            try {
+                conn.rollback();
+            } catch (SQLException ex1) {
+                
+            }
+            throw new KamarException("Gagal mengambil object gedung dengan pesan : "+ex.getMessage());
+        }finally{
+            try {
+                conn.setAutoCommit(true);
+                rs.close();
+                s.close();
+            } catch (SQLException ex) {
+                
+            }
+        }
+                
+    }   
 }
