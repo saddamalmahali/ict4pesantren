@@ -25,10 +25,10 @@ import javax.swing.JOptionPane;
  */
 public class KamarController {
     KamarModel model;
-    TabelKamarModel tabelModel;
+    
     public void setModel(KamarModel model) {
         this.model = model;
-        tabelModel = new TabelKamarModel();
+        
     }
     
     public void resetKamar(DialogIsianKamar view){
@@ -62,12 +62,14 @@ public class KamarController {
         }else if(Jumlah.trim().equals("")){
             JOptionPane.showMessageDialog(view, "Kolom Jumlah tidak boleh kosong..");
         }else{
+            model.setIdKamar(id);
+            model.setIdGedung(idGedung);
+            model.setNamaKamar(namaKamar);
+            model.setJumlah(Jumlah);
             try {
-                model.setIdKamar(id);
-                model.setIdGedung(idGedung);
-                model.setNamaKamar(namaKamar);
-                model.setJumlah(Jumlah);
+                
                 model.insertKamar();
+                model.resetKamar();
             } catch (RemoteException ex) {
                 JOptionPane.showMessageDialog(view, "Gagal di Remote Server dengan pesan : "+ex.getMessage());
                         
@@ -84,7 +86,7 @@ public class KamarController {
     
     public void deleteKamar(InternalKamar view){
         if(JOptionPane.showConfirmDialog(view, "Apakah anda yakin ingin menghapusnya?")==JOptionPane.OK_OPTION){
-            int id = model.getIdKamar();
+            int id = Integer.parseInt(view.getTxtIdDataSelection().getText());
             model.setIdKamar(id);
             try {               
                     model.deleteKamar();

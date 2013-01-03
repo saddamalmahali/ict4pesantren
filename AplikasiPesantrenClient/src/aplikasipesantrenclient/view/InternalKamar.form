@@ -41,7 +41,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="380" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="388" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -70,6 +70,9 @@
               </Table>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tabelKamarMousePressed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -163,12 +166,25 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
       <SubComponents>
+        <Component class="javax.swing.JLabel" name="jLabel3">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="ID Data Selection :"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtIdDataSelection">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
+        </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Data Selection :"/>
+            <Property name="text" type="java.lang.String" value="      Data Selection :"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtDataSelection">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
@@ -176,6 +192,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtKamarTersedia">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

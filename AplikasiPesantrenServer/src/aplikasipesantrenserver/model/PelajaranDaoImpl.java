@@ -28,8 +28,7 @@ public class PelajaranDaoImpl extends UnicastRemoteObject implements PelajaranDa
     
     private Connection conn = null;
     private String qInsert = "INSERT INTO PELAJARAN (ID, ID_KELAS, ID_KITAB) VALUES(?,?,?)";
-    private String qUpdate = "UPDATE PELAJARAN SET ID_KELAS=?, ID_KITAB=? WHERE ID=?";
-    
+    private String qUpdate = "UPDATE PELAJARAN SET ID_KELAS=?, ID_KITAB=? WHERE ID=?";    
     private String qDelete = "DELETE FROM PELAJARAN WHERE ID=?";
     private String qGetAll = "SELECT * FROM PELAJARAN";
     private String qGetPelajaran = "SELECT * FROM VIEWPELAJARAN";

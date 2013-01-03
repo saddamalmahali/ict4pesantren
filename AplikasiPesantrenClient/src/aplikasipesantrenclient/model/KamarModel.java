@@ -12,10 +12,15 @@ import aplikasipesantren.services.GedungDao;
 import aplikasipesantren.services.KamarDao;
 import aplikasipesantrenclient.koneksi.KlienKoneksi;
 import aplikasipesantrenclient.model.listener.KamarListener;
+import aplikasipesantrenclient.view.InternalKamar;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -32,10 +37,11 @@ public class KamarModel {
     private KamarDao dao;
     private KamarListener listener;
     private KlienKoneksi koneksi;
-    
+   
 
     public KamarModel() {
         koneksi = new KlienKoneksi();
+        
     }
     
     
@@ -118,7 +124,7 @@ public class KamarModel {
         }
     }
     protected void fireOnInsert(Kamar kamar){
-        if(listener!=null){
+        if(listener != null){
             listener.onInsert(kamar);
         }
     }
@@ -136,11 +142,14 @@ public class KamarModel {
         Kamar kamar = new Kamar();
         kamar.setId(idKamar);
         kamar.setIdGedung(idGedung);
+        kamar.setNamaGedung(namaGedung);
         kamar.setNama(namaKamar);
         kamar.setJumlah(jumlah);
         dao.insertKamar(kamar);
-        System.out.println("Kamar berhasil ditambahkan...");       
         fireOnInsert(kamar);
+        
+        System.out.println("Kamar berhasil ditambahkan...");       
+        
     }
     
     public void deleteKamar() throws RemoteException, NotBoundException, KamarException{
@@ -171,4 +180,5 @@ public class KamarModel {
         gedung = daoGedung.getIdGedung(namaGedung);
         return gedung;
     }
+    
 }

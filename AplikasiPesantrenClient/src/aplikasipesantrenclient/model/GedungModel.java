@@ -128,4 +128,5 @@ public class GedungModel {
         return namaGedung;
     }
     
+    
 }

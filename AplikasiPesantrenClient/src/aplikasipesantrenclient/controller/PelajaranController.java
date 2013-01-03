@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
  */
 public class PelajaranController {
     private PelajaranModel model;
-
+    
     public void setModel(PelajaranModel model) {
         this.model = model;
     }

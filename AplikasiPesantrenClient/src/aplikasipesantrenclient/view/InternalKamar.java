@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -44,20 +45,36 @@ public class InternalKamar extends javax.swing.JInternalFrame implements KamarLi
     }
     public InternalKamar() {
         tabelModel = new TabelKamarModel();
-        formIsianKamar = new DialogIsianKamar(null, closable);
+        
         model = new KamarModel();
         controller = new KamarController();
         initComponents();
-        model.setListener(this);
+        
         model.setHost("127.0.0.1");
         model.setPort(4444);
+        model.setListener(this);
         controller.setModel(model);
+        tabelKamar.getSelectionModel().addListSelectionListener(this);
         tabelKamar.setModel(tabelModel);
         loadDatabase();
     }
 
+    public TabelKamarModel getTabelModel() {
+        return tabelModel;
+    }
+    
+    
+    
     public JTable getTabelKamar() {
         return tabelKamar;
+    }
+
+    public JTextField getTxtDataSelection() {
+        return txtDataSelection;
+    }
+
+    public JTextField getTxtIdDataSelection() {
+        return txtIdDataSelection;
     }
     
     
@@ -81,6 +98,8 @@ public class InternalKamar extends javax.swing.JInternalFrame implements KamarLi
         btnPrint = new javax.swing.JButton();
         cboBerdasarkan = new javax.swing.JComboBox();
         jToolBar1 = new javax.swing.JToolBar();
+        jLabel3 = new javax.swing.JLabel();
+        txtIdDataSelection = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         txtDataSelection = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -103,6 +122,11 @@ public class InternalKamar extends javax.swing.JInternalFrame implements KamarLi
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tabelKamar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tabelKamarMousePressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabelKamar);
 
         btnCari.setText("Cari Kamar");
@@ -161,12 +185,22 @@ public class InternalKamar extends javax.swing.JInternalFrame implements KamarLi
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
 
-        jLabel1.setText("Data Selection :");
+        jLabel3.setText("ID Data Selection :");
+        jToolBar1.add(jLabel3);
+
+        txtIdDataSelection.setEditable(false);
+        jToolBar1.add(txtIdDataSelection);
+
+        jLabel1.setText("      Data Selection :");
         jToolBar1.add(jLabel1);
+
+        txtDataSelection.setEditable(false);
         jToolBar1.add(txtDataSelection);
 
         jLabel2.setText("      Kamar Tersedia : ");
         jToolBar1.add(jLabel2);
+
+        txtKamarTersedia.setEditable(false);
         jToolBar1.add(txtKamarTersedia);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -185,7 +219,7 @@ public class InternalKamar extends javax.swing.JInternalFrame implements KamarLi
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -198,11 +232,18 @@ public class InternalKamar extends javax.swing.JInternalFrame implements KamarLi
 
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
         formIsianKamar.setVisible(true);
+        
+        
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void tbnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbnHapusActionPerformed
         controller.deleteKamar(this);
+        
     }//GEN-LAST:event_tbnHapusActionPerformed
+
+    private void tabelKamarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelKamarMousePressed
+        
+    }//GEN-LAST:event_tabelKamarMousePressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCari;
@@ -211,6 +252,7 @@ public class InternalKamar extends javax.swing.JInternalFrame implements KamarLi
     private javax.swing.JComboBox cboBerdasarkan;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar jToolBar1;
@@ -218,15 +260,14 @@ public class InternalKamar extends javax.swing.JInternalFrame implements KamarLi
     private javax.swing.JButton tbnHapus;
     private javax.swing.JTextField txtCari;
     private javax.swing.JTextField txtDataSelection;
+    private javax.swing.JTextField txtIdDataSelection;
     private javax.swing.JTextField txtKamarTersedia;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void onChange(KamarModel model) {
-        kamarView.getTxtId().setText(String.valueOf(model.getIdKamar()));
-        kamarView.getCboGedung().setSelectedItem(model.getNamaGedung());
-        kamarView.getTxtNamaKamar().setText(model.getNamaKamar());
-        kamarView.getTxtJumlah().setText(model.getJumlah());
+        txtDataSelection.setText(model.getNamaKamar());
+        txtIdDataSelection.setText(String.valueOf(model.getIdKamar()));
     }
 
     @Override
@@ -244,9 +285,8 @@ public class InternalKamar extends javax.swing.JInternalFrame implements KamarLi
     public void valueChanged(ListSelectionEvent e) {
         try{
             Kamar kamar = tabelModel.get(tabelKamar.getSelectedRow());
-            model.setIdKamar(kamar.getId());            
-            model.setNamaKamar(kamar.getNama());
-            model.setJumlah(kamar.getJumlah());
+            txtIdDataSelection.setText(String.valueOf(kamar.getId()));
+            txtDataSelection.setText(kamar.getNama());
         }catch(IndexOutOfBoundsException ex){
             
         }
